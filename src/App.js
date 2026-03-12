@@ -265,29 +265,7 @@ export default function Portfolio() {
       margin-bottom: 1.5rem;
     }
 
-    .skills-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-      gap: 1rem;
-    }
-
-    .skill-item {
-      padding: 1rem;
-      background: rgba(30, 41, 59, 0.8);
-      border: 1px solid rgba(100, 200, 255, 0.2);
-      border-radius: 0.5rem;
-      transition: all 0.3s;
-      cursor: default;
-      text-align: center;
-    }
-
-    .skill-item:hover {
-      border-color: #22d3ee;
-      background: rgba(34, 211, 238, 0.1);
-      color: #22d3ee;
-    }
-
-    .experience-item {
+.experience-item {
       padding: 2rem;
       background: rgba(30, 41, 59, 0.6);
       border-left: 3px solid #22d3ee;
@@ -434,7 +412,11 @@ export default function Portfolio() {
             {['home', 'sobre', 'skills', 'experiência', 'contato'].map((item) => (
               <a
                 key={item}
-                onClick={() => scrollToSection(item)}
+                href={`#${item}`}
+                onClick={(e) => {
+                  e.preventDefault();
+                  scrollToSection(item);
+                }}
                 className={activeSection === item ? 'active' : ''}
               >
                 {item}
@@ -453,7 +435,11 @@ export default function Portfolio() {
           {['home', 'sobre', 'skills', 'experiência', 'contato'].map((item) => (
             <a
               key={item}
-              onClick={() => scrollToSection(item)}
+              href={`#${item}`}
+              onClick={(e) => {
+                e.preventDefault();
+                scrollToSection(item);
+              }}
               className={activeSection === item ? 'active' : ''}
             >
               {item}
@@ -515,12 +501,126 @@ export default function Portfolio() {
         <div style={{ width: '100%' }}>
           <h2 className="section-title">Skills & Tecnologias</h2>
           
-          <div className="skills-grid">
-            {['Python', 'JavaScript', 'Java', 'n8n', 'SQL', 'APIs', 'Automações', 'Low-Code', 'Integração de Dados', 'Inteligência Artificial'].map((skill, i) => (
-              <div key={i} className="skill-item">
-                {skill}
-              </div>
-            ))}
+          <style>{`
+            .skills-carousel {
+              position: relative;
+              overflow: hidden;
+              background: rgba(30, 41, 59, 0.4);
+              border-radius: 1rem;
+              padding: 2rem 0;
+              margin-bottom: 3rem;
+            }
+
+            .skills-track {
+              display: flex;
+              gap: 2rem;
+              animation: scroll 30s linear infinite;
+              padding: 0 2rem;
+            }
+
+            .skills-track:hover {
+              animation-play-state: paused;
+            }
+
+            .skill-logo {
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+              justify-content: center;
+              gap: 0.75rem;
+              min-width: 120px;
+              flex-shrink: 0;
+              transition: all 0.3s;
+            }
+
+            .skill-logo:hover {
+              transform: translateY(-10px);
+            }
+
+            .logo-box {
+              width: 80px;
+              height: 80px;
+              background: rgba(34, 211, 238, 0.1);
+              border: 2px solid rgba(34, 211, 238, 0.3);
+              border-radius: 0.75rem;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              font-size: 2.5rem;
+              transition: all 0.3s;
+            }
+
+            .skill-logo:hover .logo-box {
+              background: rgba(34, 211, 238, 0.2);
+              border-color: #22d3ee;
+              box-shadow: 0 0 20px rgba(34, 211, 238, 0.3);
+            }
+
+            .skill-name {
+              font-size: 0.9rem;
+              color: #cbd5e1;
+              font-weight: 500;
+              text-align: center;
+            }
+
+            @keyframes scroll {
+              0% {
+                transform: translateX(0);
+              }
+              100% {
+                transform: translateX(calc(-120px * 10 - 2rem * 10));
+              }
+            }
+
+            .skills-grid-static {
+              display: grid;
+              grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+              gap: 1.5rem;
+            }
+
+            @media (max-width: 768px) {
+              .skill-logo {
+                min-width: 100px;
+              }
+
+              .logo-box {
+                width: 70px;
+                height: 70px;
+                font-size: 2rem;
+              }
+
+              .skills-carousel {
+                padding: 1.5rem 0;
+              }
+            }
+          `}</style>
+          
+          <div className="skills-carousel">
+            <div className="skills-track">
+              {[
+                { name: 'Python', icon: '🐍' },
+                { name: 'JavaScript', icon: '⚡' },
+                { name: 'Java', icon: '☕' },
+                { name: 'n8n', icon: '🔄' },
+                { name: 'SQL', icon: '🗄️' },
+                { name: 'APIs', icon: '🔌' },
+                { name: 'Automações', icon: '🤖' },
+                { name: 'Low-Code', icon: '📦' },
+                { name: 'Integração', icon: '🔗' },
+                { name: 'I.A.', icon: '🧠' },
+                // Repetindo para criar o loop contínuo
+                { name: 'Python', icon: '🐍' },
+                { name: 'JavaScript', icon: '⚡' },
+                { name: 'Java', icon: '☕' },
+                { name: 'n8n', icon: '🔄' },
+                { name: 'SQL', icon: '🗄️' },
+              ].map((skill, i) => (
+                <div key={i} className="skill-logo">
+                  <div className="logo-box">{skill.icon}</div>
+                  <span className="skill-name">{skill.name}</span>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
